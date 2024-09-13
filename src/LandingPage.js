@@ -127,7 +127,7 @@ const VibeMatcher = () => {
             // get google auth token
             const token = await auth.currentUser.getIdToken();
 
-            const response = await fetch('http://localhost:5001/api/data', {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/data`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
