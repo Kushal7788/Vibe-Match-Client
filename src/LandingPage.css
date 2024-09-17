@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 
 .vibe-matcher {
   background-color: #9e2146;
@@ -31,7 +31,7 @@
 
 .animated-background::before,
 .animated-background::after {
-  content: '';
+  content: "";
   position: absolute;
   top: -50%;
   left: -50%;
@@ -55,14 +55,24 @@
 }
 
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes rotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .pulse-circle {
@@ -97,9 +107,18 @@
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); opacity: 0.7; }
-  50% { transform: scale(1.5); opacity: 0.3; }
-  100% { transform: scale(1); opacity: 0.7; }
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
 }
 
 .content {
@@ -124,15 +143,13 @@
 }
 
 .logo.pixel-art {
-  font-family: 'Press Start 2P', cursive;
+  font-family: "Press Start 2P", cursive;
   font-size: 2.5em;
   line-height: 1.2;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #ffffff;
-  text-shadow: 
-    2px 2px 0 #ff00ff,
-    4px 4px 0 #00ffff;
+  text-shadow: 2px 2px 0 #ff00ff, 4px 4px 0 #00ffff;
   margin-bottom: 30px; /* Add margin to separate from button */
   transform: scale(1, 1.2);
   -webkit-font-smoothing: none;
@@ -152,25 +169,20 @@
   font-size: 1.5em;
   margin: 0;
   padding: 10px 20px 10px 10px;
-  text-shadow: 
-    1px 1px 0 #ff00ff,
-    2px 2px 0 #00ffff;
+  text-shadow: 1px 1px 0 #ff00ff, 2px 2px 0 #00ffff;
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 10px;
 }
 
 .reclaim-button {
-  font-family: 'Press Start 2P', cursive;
+  font-family: "Press Start 2P", cursive;
   font-size: 18px;
   padding: 20px 15px;
-  border: 2px solid #FFD700;
+  border: 2px solid #ffd700;
   color: white;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 
-    0 0 0 2px #FFD700,
-    0 0 10px 2px #FFD700,
-    0 0 20px 2px #FFD700;
+  box-shadow: 0 0 0 2px #ffd700, 0 0 10px 2px #ffd700, 0 0 20px 2px #ffd700;
   text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
@@ -185,11 +197,47 @@
   overflow: hidden;
 }
 
-.reclaim-button.twitter { background-color: #D81B60; }
-.reclaim-button.netflix { background-color: #C2185B; }
-.reclaim-button.amazon-prime { background-color: #AD1457; }
-.reclaim-button.swiggy { background-color: #880E4F; }
-.reclaim-button.nykaa { background-color: #4A148C; }
+.reclaim-button.twitter {
+  background-color: #d81b60;
+}
+.reclaim-button.netflix {
+  background-color: #c2185b;
+}
+.reclaim-button.amazon-prime {
+  background-color: #ad1457;
+}
+.reclaim-button.swiggy {
+  background-color: #880e4f;
+}
+.reclaim-button.nykaa {
+  background-color: #4a148c;
+}
+
+.leaderboard-button {
+  font-family: "Press Start 2P", cursive;
+  font-size: 18px;
+  padding: 20px 15px;
+  border: 2px solid #ffd700;
+  color: white;
+  text-transform: uppercase;
+  cursor: pointer;
+  background-color: #4b0082;
+  box-shadow: 0 0 0 2px #ffd700, 0 0 10px 2px #ffd700, 0 0 20px 2px #ffd700;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+  height: 80px;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.leaderboard-button:hover {
+  transform: translateY(-3px);
+}
 
 .reclaim-buttons {
   display: flex;
@@ -221,7 +269,7 @@
 
 .user-name {
   color: white;
-  font-family: 'Press Start 2P', cursive;
+  font-family: "Press Start 2P", cursive;
   font-size: 12px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   white-space: nowrap;
@@ -242,7 +290,12 @@
   height: 30px;
   border-radius: 50%;
   transition: background-color 0.3s ease;
-  background-color: rgba(255, 0, 0, 0.7); /* Red background with some transparency */
+  background-color: rgba(
+    255,
+    0,
+    0,
+    0.7
+  ); /* Red background with some transparency */
 }
 
 .signout-icon:hover {
@@ -254,18 +307,16 @@
 }
 
 .hype-headline {
-  font-family: 'Press Start 2P', cursive;
+  font-family: "Press Start 2P", cursive;
   font-size: 28px;
-  color: #FFD700;
-  text-shadow: 
-    2px 2px 0 #ff00ff,
-    4px 4px 0 #00ffff;
+  color: #ffd700;
+  text-shadow: 2px 2px 0 #ff00ff, 4px 4px 0 #00ffff;
   margin-bottom: 30px; /* Reduce from 50px to 30px */
   padding: 20px 0;
   background-color: rgba(0, 0, 0, 0.6);
-  border-top: 3px solid #FFD700;
-  border-bottom: 3px solid #FFD700;
-  box-shadow: 0 0 20px #FFD700;
+  border-top: 3px solid #ffd700;
+  border-bottom: 3px solid #ffd700;
+  box-shadow: 0 0 20px #ffd700;
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
@@ -311,18 +362,16 @@
 }
 
 .qr-code-container h2.verification-headline {
-  font-family: 'Press Start 2P', cursive;
+  font-family: "Press Start 2P", cursive;
   font-size: 20px;
-  color: #FFD700;
-  text-shadow: 
-    2px 2px 0 #ff00ff,
-    3px 3px 0 #00ffff;
+  color: #ffd700;
+  text-shadow: 2px 2px 0 #ff00ff, 3px 3px 0 #00ffff;
   margin-bottom: 20px;
   text-align: center;
 }
 
 .qr-code-container p {
-  font-family: 'Press Start 2P', cursive;
+  font-family: "Press Start 2P", cursive;
   font-size: 12px;
   color: #ffffff;
   text-align: center;
@@ -331,39 +380,36 @@
 }
 
 .qr-code-container .back-button {
-  font-family: 'Press Start 2P', cursive;
+  font-family: "Press Start 2P", cursive;
   font-size: 14px;
   padding: 15px 25px;
   margin-top: 30px;
-  background-color: #4B0082;
+  background-color: #4b0082;
   color: white;
-  border: 2px solid #FFD700;
+  border: 2px solid #ffd700;
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 0 10px #FFD700;
+  box-shadow: 0 0 10px #ffd700;
   text-transform: uppercase;
 }
 
 .qr-code-container .back-button:hover {
-  background-color: #3A006F;
-  box-shadow: 0 0 15px #FFD700;
+  background-color: #3a006f;
+  box-shadow: 0 0 15px #ffd700;
   transform: translateY(-2px);
 }
 
 .login-button.pixel-art {
-  font-family: 'Press Start 2P', cursive;
+  font-family: "Press Start 2P", cursive;
   font-size: 18px;
   padding: 20px 25px;
-  border: 2px solid #FFD700;
+  border: 2px solid #ffd700;
   color: white;
   text-transform: uppercase;
   cursor: pointer;
-  background-color: #4B0082;
-  box-shadow: 
-    0 0 0 2px #FFD700,
-    0 0 10px 2px #FFD700,
-    0 0 20px 2px #FFD700;
+  background-color: #4b0082;
+  box-shadow: 0 0 0 2px #ffd700, 0 0 10px 2px #ffd700, 0 0 20px 2px #ffd700;
   text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
@@ -379,10 +425,7 @@
 
 .login-button.pixel-art:hover {
   transform: translateY(-3px);
-  box-shadow: 
-    0 0 0 2px #FFD700,
-    0 0 15px 2px #FFD700,
-    0 0 30px 2px #FFD700;
+  box-shadow: 0 0 0 2px #ffd700, 0 0 15px 2px #ffd700, 0 0 30px 2px #ffd700;
 }
 
 .login-button.pixel-art svg {
@@ -401,8 +444,11 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: 
-    radial-gradient(circle at 50% 50%, rgba(255, 0, 255, 0.5), transparent 50%),
+  background: radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 0, 255, 0.5),
+      transparent 50%
+    ),
     radial-gradient(circle at 100% 0, rgba(0, 255, 255, 0.5), transparent 50%),
     radial-gradient(circle at 0 100%, rgba(255, 255, 0, 0.5), transparent 50%),
     radial-gradient(circle at 0 0, rgba(255, 0, 0, 0.5), transparent 50%),
@@ -415,7 +461,7 @@
 
 .crazy-background::before,
 .crazy-background::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 200vmax;
   height: 200vmax;
@@ -423,8 +469,8 @@
   left: -100vmax;
   animation: rotate 20s linear infinite;
   background: rgba(255, 255, 255, 0.1);
-  background-image: 
-    repeating-conic-gradient(transparent 0deg 15deg, rgba(255, 255, 255, 0.1) 15deg 30deg),
+  /* background-image: repeating-conic-gradient(
+    transparent 0deg 15deg,
+    rgba(255, 255, 255, 0.1) 15deg 30deg
+  ); */
 }
-
-
