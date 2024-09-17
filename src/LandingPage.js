@@ -93,8 +93,6 @@ const VibeMatcher = () => {
 
   const navigate = useNavigate();
 
-  console.log("user", user);
-
   const signInWithGoogle = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider).catch((error) => {
@@ -154,7 +152,6 @@ const VibeMatcher = () => {
   const getVerificationReq = async (service) => {
     // get auth token
     const token = await auth.currentUser.getIdToken();
-    console.log("Auth token:", token);
     setSelectedService(service);
     setIsLoading(true);
     const APP_ID = process.env.REACT_APP_RECLAIM_APP_ID;
@@ -186,29 +183,20 @@ const VibeMatcher = () => {
       const { requestUrl, statusUrl } =
         await reclaimClient.createVerificationRequest();
 
-      console.log("Request URL:", requestUrl);
       setQrCodeUrl(requestUrl);
 
       await reclaimClient.startSession({
         onSuccessCallback: async (proof) => {
-          console.log("Verification success", proof);
           setReclaimData("Verification successful!");
           setQrCodeUrl(null);
 
           // Extract titles from the proof
           const titles = extractTitles(proof, service);
-          console.log("Extracted titles:", titles);
 
           // Send proof data to the backend
           try {
             // get google auth token
             const token = await auth.currentUser.getIdToken();
-            console.log({
-              titles: titles,
-              serviceType: service,
-              displayName:
-                user?.reloadUserInfo?.screenName || user?.displayName || null,
-            });
             const response = await fetch(
               `${process.env.REACT_APP_BACKEND_URL}/api/data`,
               {

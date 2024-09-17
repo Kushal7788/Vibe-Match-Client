@@ -111,7 +111,7 @@ const Leaderboard = () => {
       >
         <span className="similar-user-rank">{index + 1}</span>
         <div className="similar-user-email">
-          <span>{user.email}</span>
+          <span>{user?.displayName || user?.email || ""}</span>
           {pixelHearts}
         </div>
         <span className="similar-user-score">
@@ -159,7 +159,6 @@ const Leaderboard = () => {
                 : "No matches yet, calculate your vibe to find your soulmate!"}
             </h3>
             <ul className="similar-users-list">
-              {similarUsers.map((user, index) => renderUserItem(user, index))}
               {similarUsers.map((user, index) => renderUserItem(user, index))}
             </ul>
           </div>
