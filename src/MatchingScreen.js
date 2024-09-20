@@ -68,7 +68,12 @@ const MatchingScreen = () => {
         setIsLoading(true);
         try {
           const vibeResponse = await fetch(
-            `${process.env.REACT_APP_BACKEND_URL}/api/similarity/${fromUid}/${user.uid}`
+            `${process.env.REACT_APP_BACKEND_URL}/api/similarity/${fromUid}/${user.uid}`,
+            {
+              headers: {
+                Authorization: `Bearer ${user.accessToken}`,
+              },
+            }
           );
 
           const similariltyData = await vibeResponse.json();
