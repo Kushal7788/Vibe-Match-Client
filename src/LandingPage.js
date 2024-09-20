@@ -219,7 +219,9 @@ const VibeMatcher = () => {
             if (!response.ok) {
               throw new Error("Failed to send proof data to the server");
             }
-
+            setQrCodeUrl(null);
+            setSelectedService(null);
+            alert("Proof data and titles sent successfully");
             console.log("Proof data and titles sent successfully");
           } catch (error) {
             console.error("Error sending proof data:", error);
@@ -306,14 +308,28 @@ const VibeMatcher = () => {
           </button>
         </div>
         {reclaimData && <p className="reclaim-data">{reclaimData}</p>}
-        <button
-          className="leaderboard-button"
-          onClick={() => {
-            navigate(`/leaderboard/${user.uid}`);
-          }}
-        >
-          Leaderboard
-        </button>
+        <br />
+        <div className="reclaim-buttons">
+          <button
+            className="leaderboard-button"
+            onClick={() => {
+              navigate(`/leaderboard/${user.uid}`);
+            }}
+          >
+            Leaderboard
+          </button>
+          <button
+            className="leaderboard-button"
+            onClick={() => {
+              // copy url to clipboard and alert users link has been copied
+              const url = `${window.location.href}matching/${user.uid}?fromUsername=${user.displayName}`;
+              navigator.clipboard.writeText(url);
+              alert("Link has been copied to clipboard");
+            }}
+          >
+            Check Vibe With Friends
+          </button>
+        </div>
       </>
     );
   };
