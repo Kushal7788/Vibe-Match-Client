@@ -92,7 +92,6 @@ const MatchingScreen = () => {
     }
   }, [user]);
 
-
   const fetchUserData = async () => {
     try {
       const token = await auth.currentUser.getIdToken();
@@ -214,6 +213,10 @@ const MatchingScreen = () => {
       }
     }
     return [];
+  };
+
+  const openRequestUrl = () => {
+    window.open(qrCodeUrl, "_blank");
   };
 
   const getVerificationReq = async (service) => {
@@ -416,12 +419,29 @@ const MatchingScreen = () => {
                               >
                                 <QRCode value={qrCodeUrl} size={256} />
                               </div>
+                              <button
+                                onClick={openRequestUrl}
+                                className="reclaim-button netflix external-open-button"
+                              >
+                                Link
+                              </button>
                               <p>
-                                {isLoading
-                                  ? "Tuning into your vibe..."
-                                  : message
-                                  ? message
-                                  : "Scan this QR code to share your watch history"}
+                                {isLoading ? (
+                                  "Tuning into your vibe..."
+                                ) : message ? (
+                                  message
+                                ) : (
+                                  <>
+                                    <span className="for-desktop">
+                                      Scan this QR code to share your watch
+                                      history
+                                    </span>
+                                    <span className="for-mobile">
+                                      Click on the above button to share your
+                                      watch history
+                                    </span>
+                                  </>
+                                )}
                               </p>
                               <button
                                 className="back-button"

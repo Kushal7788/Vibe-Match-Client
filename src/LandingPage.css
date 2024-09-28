@@ -191,6 +191,11 @@
   color: white;
   text-transform: uppercase;
   cursor: pointer;
+  margin: 10px;
+  width: calc(33.33% - 20px);
+  max-width: 200px;
+  min-width: 150px;
+  height: 80px;
   box-shadow: 0 0 0 2px #ffd700, 0 0 10px 2px #ffd700, 0 0 20px 2px #ffd700;
   text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
   display: flex;
@@ -228,6 +233,16 @@
   line-height: 1.5;
 }
 
+.toast-message {
+  font-size: 20px;
+  font-weight: bold;
+  background-color: #ad1457;
+  color: white;
+  font-family: "Press Start 2P", cursive;
+  width: 500px;
+  margin-left: "-50px";
+}
+
 .leaderboard-button {
   font-family: "Press Start 2P", cursive;
   font-size: 18px;
@@ -260,6 +275,33 @@
   color: rgba(255, 255, 255, 0.4);
   text-shadow: none;
   box-shadow: 0 0 0 2px #ffd700, 0 0 10px 2px #ffd700, 0 0 20px 2px #ffd700;
+}
+
+.external-open-button {
+  font-family: "Press Start 2P", cursive;
+  font-size: 18px;
+  padding: 20px 15px !important;
+  border: 2px solid #ffd700;
+  text-transform: uppercase;
+  color: white;
+  background-color: #d81b60;
+  display: none;
+  margin: 10px;
+  width: calc(33.33% - 20px);
+  max-width: 200px;
+  min-width: 150px;
+  height: auto !important;
+}
+.for-desktop {
+  display: block;
+}
+
+.for-mobile {
+  display: none;
+}
+
+.qr-code-wrapper {
+  display: block;
 }
 
 .reclaim-buttons {
@@ -533,4 +575,23 @@
 .tooltip:hover .tooltiptext {
   visibility: visible;
   opacity: 1 !important;
+}
+
+@media (max-width: 768px) {
+  .external-open-button {
+    display: block;
+  }
+  .qr-code-wrapper {
+    display: none;
+  }
+  .for-desktop {
+    display: none;
+  }
+  .for-mobile {
+    display: block;
+  }
+  .toast-message {
+    width: 90%;
+    margin: auto;
+  }
 }
