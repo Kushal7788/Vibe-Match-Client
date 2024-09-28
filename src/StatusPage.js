@@ -58,7 +58,7 @@ const StatusPage = () => {
               className="verification-headline matching-headline"
               style={{ margin: 0 }}
             >
-              {statusToText[sessionStatus?.session?.status] ?? "Unknown"}
+              {statusToText[sessionStatus?.session?.statusV2] ?? "Unknown"}
             </h2>
           </div>
         </div>
