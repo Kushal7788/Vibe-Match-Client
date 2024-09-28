@@ -175,8 +175,8 @@ const VibeMatcher = () => {
         throw new Error("Invalid service selected");
       }
 
-      await reclaimClient.buildProofRequest(providerId, false, "V2Linking");
-
+      await reclaimClient.buildProofRequest(providerId, true, "V2Linking");
+      reclaimClient.setRedirectUrl(window.location.href);
       reclaimClient.setSignature(
         await reclaimClient.generateSignature(APP_SECRET)
       );
