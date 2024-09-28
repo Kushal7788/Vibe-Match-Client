@@ -160,6 +160,15 @@
   text-align: center;
 }
 
+.subheadline.pixel-art {
+  font-family: "Press Start 2P", cursive;
+  font-size: 1.1em;
+  margin-bottom: 20px;
+  padding: 10px 20px 10px 10px;
+  text-shadow: 1px 1px 0 #ff00ff, 2px 2px 0 #00ffff;
+  line-height: 1.5;
+}
+
 .logo.pixel-art.logged-in {
   position: absolute;
   top: 20px;
@@ -212,6 +221,12 @@
 .reclaim-button.nykaa {
   background-color: #4a148c;
 }
+.reclaim-button.score-reveal {
+  background-color: #4a148c;
+  max-width: 400px !important;
+  width: 80%;
+  line-height: 1.5;
+}
 
 .leaderboard-button {
   font-family: "Press Start 2P", cursive;
@@ -237,6 +252,14 @@
 
 .leaderboard-button:hover {
   transform: translateY(-3px);
+}
+
+.leaderboard-button:disabled {
+  cursor: not-allowed;
+  background-color: rgba(75, 0, 130, 0.4);
+  color: rgba(255, 255, 255, 0.4);
+  text-shadow: none;
+  box-shadow: 0 0 0 2px #ffd700, 0 0 10px 2px #ffd700, 0 0 20px 2px #ffd700;
 }
 
 .reclaim-buttons {
@@ -325,7 +348,7 @@
 .hype-headline-content {
   display: inline-block;
   padding-left: 100%;
-  animation: marquee 30s linear infinite;
+  animation: marquee 20s linear infinite;
 }
 
 @keyframes marquee {
@@ -354,7 +377,7 @@
   background-color: rgba(0, 0, 0, 0.8);
   padding: 30px;
   border-radius: 15px;
-  max-width: 350px;
+  max-width: 400px;
   box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
   display: flex;
   flex-direction: column;
@@ -473,4 +496,41 @@
     transparent 0deg 15deg,
     rgba(255, 255, 255, 0.1) 15deg 30deg
   ); */
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  overflow: visible;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  min-width: 500px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 10px 10px;
+  position: absolute;
+  z-index: 1;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -250px;
+}
+
+.tooltip:hover .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1 !important;
 }

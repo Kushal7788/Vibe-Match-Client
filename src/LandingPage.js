@@ -1,16 +1,12 @@
-import React, { useState } from "react";
-import "./LandingPage.css";
-import {
-  signInWithPopup,
-  GoogleAuthProvider,
-  signOut,
-  TwitterAuthProvider,
-} from "firebase/auth";
+import React, { useState, useEffect } from "react";
+import { signInWithPopup, signOut, GoogleAuthProvider } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase";
 import { Reclaim } from "@reclaimprotocol/js-sdk";
 import QRCode from "react-qr-code";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "./LandingPage.css";
 
 const GoogleLogo = () => (
   <svg
@@ -39,19 +35,6 @@ const GoogleLogo = () => (
   </svg>
 );
 
-const TwitterLogo = () => (
-  <svg
-    width="18"
-    height="18"
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 248 204"
-  >
-    <path
-      fill="#1DA1F2"
-      d="M221.95 51.29c.15 2.17.15 4.34.15 6.53 0 66.73-50.8 143.69-143.69 143.69v-.04c-27.44.04-54.31-7.82-77.41-22.64 3.99.48 8 .72 12.02.73 22.74.02 44.83-7.61 62.72-21.66-21.61-.41-40.56-14.5-47.18-35.07 7.57 1.46 15.37 1.16 22.8-.87-23.56-4.76-40.51-25.46-40.51-49.5v-.64c7.02 3.91 14.88 6.08 22.92 6.32C11.58 63.31 4.74 33.79 18.14 10.71c25.64 31.55 63.47 50.73 104.08 52.76-4.07-17.54 1.49-35.92 14.61-48.25 20.34-19.12 52.33-18.14 71.45 2.19 11.31-2.23 22.15-6.38 32.07-12.26-3.77 11.69-11.66 21.62-22.2 27.93 10.01-1.18 19.79-3.86 29-7.95-6.78 10.16-15.32 19.01-25.2 26.16z"
-    />
-  </svg>
-);
 const SignOutIcon = () => (
   <svg
     width="20"
@@ -86,26 +69,45 @@ const SignOutIcon = () => (
 
 const VibeMatcher = () => {
   const [user] = useAuthState(auth);
-  const [reclaimData, setReclaimData] = useState(null);
   const [qrCodeUrl, setQrCodeUrl] = useState(null);
   const [selectedService, setSelectedService] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [message, setMessage] = useState("212121");
+
+  console.log({ message });
 
   const navigate = useNavigate();
+
+  // if user get user data from backend
+  useEffect(() => {
+    if (user) {
+      fetchUserData();
+    }
+  }, [user]);
+
+  const fetchUserData = async () => {
+    try {
+      const token = await auth.currentUser.getIdToken();
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/api/user`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const data = await response.json();
+      setUserData(data?.user || null);
+    } catch (error) {
+      console.error("Error fetching user data", error);
+    }
+  };
 
   const signInWithGoogle = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider).catch((error) => {
       console.error("Error signing in with Google", error);
-    });
-
-    // get google auth token
-  };
-
-  const signInWithTwitter = () => {
-    const provider = new TwitterAuthProvider();
-    signInWithPopup(auth, provider).catch((error) => {
-      console.error("Error signing in with Twitter", error);
     });
   };
 
@@ -115,18 +117,15 @@ const VibeMatcher = () => {
     });
   };
 
-  // create a method to get titles from the proof object
-
-  // Add this new function to extract titles
   const extractTitles = (proofData, service) => {
-    if (service === "Netflix") {
+    if (service === "netflix") {
       if (Array.isArray(proofData) && proofData.length > 0) {
         const publicData = proofData[0].publicData;
         if (publicData && Array.isArray(publicData.titles)) {
           return publicData.titles;
         }
       }
-    } else if (service === "Amazon Prime") {
+    } else if (service === "prime") {
       if (Array.isArray(proofData) && proofData.length > 0) {
         const publicData = proofData[0].publicData;
         if (publicData && publicData.wigetsData) {
@@ -151,7 +150,8 @@ const VibeMatcher = () => {
 
   const getVerificationReq = async (service) => {
     // get auth token
-    const token = await auth.currentUser.getIdToken();
+    setMessage(null);
+
     setSelectedService(service);
     setIsLoading(true);
     const APP_ID = process.env.REACT_APP_RECLAIM_APP_ID;
@@ -166,9 +166,9 @@ const VibeMatcher = () => {
       const reclaimClient = new Reclaim.ProofRequest(APP_ID);
       let providerId;
 
-      if (service === "Netflix") {
+      if (service === "netflix") {
         providerId = "f043fdac-1b4e-4c2f-83da-50d8e63a3ce3";
-      } else if (service === "Amazon Prime") {
+      } else if (service === "prime") {
         providerId = "bf90309d-2f8f-40f6-9983-5425cca38c4e";
       } else {
         throw new Error("Invalid service selected");
@@ -187,7 +187,12 @@ const VibeMatcher = () => {
 
       await reclaimClient.startSession({
         onSuccessCallback: async (proof) => {
-          setReclaimData("Verification successful!");
+          setMessage(
+            `You have successfully shared ${
+              service === "netflix" ? "Netflix" : "Prime"
+            } watch history!`
+          );
+          // toast.success("Verification successful!");
           setQrCodeUrl(null);
 
           // Extract titles from the proof
@@ -212,6 +217,7 @@ const VibeMatcher = () => {
                     user?.reloadUserInfo?.screenName ||
                     user?.displayName ||
                     null,
+                  email: user?.email || null,
                 }),
               }
             );
@@ -219,27 +225,42 @@ const VibeMatcher = () => {
             if (!response.ok) {
               throw new Error("Failed to send proof data to the server");
             }
+
             setQrCodeUrl(null);
             setSelectedService(null);
-            alert("Proof data and titles sent successfully");
+            // alert("Proof data and titles sent successfully");
+
             console.log("Proof data and titles sent successfully");
           } catch (error) {
             console.error("Error sending proof data:", error);
+          } finally {
+            fetchUserData();
           }
         },
         onFailureCallback: (error) => {
           console.error("Verification failed", error);
-          setReclaimData("Verification failed. Please try again.");
+          toast.error("Verification failed. Please try again.");
           setQrCodeUrl(null);
+          fetchUserData();
         },
       });
     } catch (error) {
       console.error("Error in getVerificationReq:", error);
-      setReclaimData("An error occurred. Please try again.");
+      toast.error("An error occurred. Please try again.");
       setSelectedService(null);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const navigateLeaderboard = () => {
+    navigate(`/leaderboard/${user.uid}`);
+  };
+
+  const copyLinkToClipboard = () => {
+    const url = `${window.location.href}matching/${user.uid}?fromUsername=${user.displayName}`;
+    navigator.clipboard.writeText(url);
+    toast.success("Link has been copied to clipboard");
   };
 
   const renderContent = () => {
@@ -267,6 +288,8 @@ const VibeMatcher = () => {
           <p>
             {isLoading
               ? "Tuning into your vibe..."
+              : message
+              ? message
               : "Scan this QR code to share your watch history"}
           </p>
           <button
@@ -286,48 +309,66 @@ const VibeMatcher = () => {
       <>
         <h2 className="hype-headline">
           <span className="hype-headline-content">
-            Vibe with your Tribe! &nbsp;&nbsp;&nbsp;&nbsp; Find Your Rhythm!
-            &nbsp;&nbsp;&nbsp;&nbsp; Connect and Groove!
-            &nbsp;&nbsp;&nbsp;&nbsp; Vibe with your Tribe!
-            &nbsp;&nbsp;&nbsp;&nbsp; Find Your Rhythm! &nbsp;&nbsp;&nbsp;&nbsp;
-            Connect and Groove! &nbsp;&nbsp;&nbsp;&nbsp;
+            Add your Netflix or Prime data to unlock these features.
           </span>
         </h2>
         <div className="reclaim-buttons">
           <button
             className="reclaim-button netflix"
-            onClick={() => getVerificationReq("Netflix")}
+            onClick={() => getVerificationReq("netflix")}
           >
             Netflix
           </button>
           <button
             className="reclaim-button amazon-prime"
-            onClick={() => getVerificationReq("Amazon Prime")}
+            onClick={() => getVerificationReq("prime")}
           >
-            Amazon Prime
+            Prime
           </button>
         </div>
-        {reclaimData && <p className="reclaim-data">{reclaimData}</p>}
         <br />
         <div className="reclaim-buttons">
           <button
-            className="leaderboard-button"
-            onClick={() => {
-              navigate(`/leaderboard/${user.uid}`);
-            }}
+            className="leaderboard-button tooltip"
+            onClick={navigateLeaderboard}
+            disabled={
+              !(
+                userData?.verificationSubmitted?.netflix ||
+                userData?.verificationSubmitted?.prime
+              )
+            }
+            style={{ lineHeight: "1.4" }}
           >
+            {!(
+              userData?.verificationSubmitted?.netflix ||
+              userData?.verificationSubmitted?.prime
+            ) && (
+              <span class="tooltiptext">
+                Submit your data to unlock the leaderboard
+              </span>
+            )}
             Leaderboard
           </button>
           <button
-            className="leaderboard-button"
-            onClick={() => {
-              // copy url to clipboard and alert users link has been copied
-              const url = `${window.location.href}matching/${user.uid}?fromUsername=${user.displayName}`;
-              navigator.clipboard.writeText(url);
-              alert("Link has been copied to clipboard");
-            }}
+            className="leaderboard-button tooltip"
+            onClick={copyLinkToClipboard}
+            style={{ lineHeight: "1.4" }}
+            disabled={
+              !(
+                userData?.verificationSubmitted?.netflix ||
+                userData?.verificationSubmitted?.prime
+              )
+            }
           >
-            Check Vibe With Friends
+            {!(
+              userData?.verificationSubmitted?.netflix ||
+              userData?.verificationSubmitted?.prime
+            ) && (
+              <span class="tooltiptext">
+                Submit Netflix or Prime data to check your vibe
+              </span>
+            )}
+            Vibe Check with a Friend
           </button>
         </div>
       </>
@@ -396,13 +437,19 @@ const VibeMatcher = () => {
           {user ? (
             <div className="logged-in-content">{renderContent()}</div>
           ) : (
-            <button
-              className="login-button pixel-art"
-              onClick={signInWithTwitter}
-            >
-              <TwitterLogo />
-              <span>Get Started</span>
-            </button>
+            <>
+              <h2 className="subheadline pixel-art">
+                Securely share your Netflix and Prime watch history <br />
+                to find friends with matching tastes
+              </h2>
+              <button
+                className="login-button pixel-art"
+                onClick={signInWithGoogle}
+              >
+                <GoogleLogo />
+                <span>Login</span>
+              </button>
+            </>
           )}
         </div>
       </div>
