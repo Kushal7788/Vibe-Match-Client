@@ -92,6 +92,7 @@ const MatchingScreen = () => {
     }
   }, [user]);
 
+
   const fetchUserData = async () => {
     try {
       const token = await auth.currentUser.getIdToken();
