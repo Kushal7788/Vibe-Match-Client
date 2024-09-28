@@ -176,7 +176,7 @@ const VibeMatcher = () => {
       }
 
       await reclaimClient.buildProofRequest(providerId, true, "V2Linking");
-      reclaimClient.setRedirectUrl(window.location.href);
+      // reclaimClient.setRedirectUrl(window.location.href);
       reclaimClient.setSignature(
         await reclaimClient.generateSignature(APP_SECRET)
       );
@@ -229,7 +229,6 @@ const VibeMatcher = () => {
             }
 
             setQrCodeUrl(null);
-            setSelectedService(null);
             // alert("Proof data and titles sent successfully");
 
             console.log("Proof data and titles sent successfully");
@@ -251,7 +250,6 @@ const VibeMatcher = () => {
     } catch (error) {
       console.error("Error in getVerificationReq:", error);
       toast.error("An error occurred. Please try again.");
-      setSelectedService(null);
     } finally {
       setIsLoading(false);
     }
