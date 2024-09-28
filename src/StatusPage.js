@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+const statusToText = {
+  PENDING: "Waiting for verification",
+  VERIFIED: "Verification successful",
+  REJECTED: "Verification failed",
+};
+
 const StatusPage = () => {
   const { sessionId } = useParams();
   const [sessionStatus, setSessionStatus] = useState(null);
@@ -16,7 +22,6 @@ const StatusPage = () => {
       `https://api.reclaimprotocol.org/api/sdk/session/${sessionId}`
     );
     const data = await res.json();
-    console.log(data, "...");
     setSessionStatus(data);
   };
 
@@ -47,6 +52,14 @@ const StatusPage = () => {
           >
             VIBE MATCH
           </h1>
+          <div className="qr-code-container status-page-main">
+            <h2
+              className="verification-headline matching-headline"
+              style={{ margin: 0 }}
+            >
+              {statusToText[sessionStatus?.session?.status] ?? "Unknown"}
+            </h2>
+          </div>
         </div>
       </div>
     </div>
