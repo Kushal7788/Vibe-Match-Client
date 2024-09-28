@@ -229,7 +229,6 @@ const VibeMatcher = () => {
             }
 
             setQrCodeUrl(null);
-            setSelectedService(null);
             // alert("Proof data and titles sent successfully");
 
             console.log("Proof data and titles sent successfully");
@@ -251,7 +250,6 @@ const VibeMatcher = () => {
     } catch (error) {
       console.error("Error in getVerificationReq:", error);
       toast.error("An error occurred. Please try again.");
-      setSelectedService(null);
     } finally {
       setIsLoading(false);
     }
