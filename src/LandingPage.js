@@ -73,7 +73,7 @@ const VibeMatcher = () => {
   const [selectedService, setSelectedService] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState(null);
-  const [message, setMessage] = useState("212121");
+  const [message, setMessage] = useState(null);
   const [proofStatus, setProofStatus] = useState(null);
 
   console.log({ message });
@@ -239,6 +239,7 @@ const VibeMatcher = () => {
             fetchUserData();
           }
         },
+
         onFailureCallback: (error) => {
           setProofStatus("error");
           console.error("Verification failed", error);
@@ -261,9 +262,22 @@ const VibeMatcher = () => {
   };
 
   const copyLinkToClipboard = () => {
-    const url = `${window.location.href}matching/${user.uid}?fromUsername=${user.displayName}`;
+    const url = `${window.location.href}matching/${
+      user.uid
+    }?fromUsername=${encodeURIComponent(user.displayName)}`;
     navigator.clipboard.writeText(url);
-    toast.success("Link has been copied to clipboard");
+    // add styles to toast
+    toast.error(
+      "Link Copied to Clipboard, share with your friends or on socials to see their vibe score with you",
+      {
+        icon: false,
+        className: "toast-message",
+      }
+    );
+  };
+
+  const openRequestUrl = () => {
+    window.open(qrCodeUrl, "_blank");
   };
 
   const renderContent = () => {
@@ -284,24 +298,42 @@ const VibeMatcher = () => {
             <div className="loading-scanner"></div>
           ) : (
             qrCodeUrl && (
-              <div
-                className="qr-code-wrapper"
-                style={{
-                  backgroundColor: "white",
-                  padding: "10px",
-                }}
-              >
-                <QRCode value={qrCodeUrl} size={256} />
-              </div>
+              <>
+                <div
+                  className="qr-code-wrapper"
+                  style={{
+                    backgroundColor: "white",
+                    padding: "10px",
+                  }}
+                >
+                  <QRCode value={qrCodeUrl} size={256} />
+                </div>
+                <button
+                  onClick={openRequestUrl}
+                  className="reclaim-button netflix external-open-button"
+                >
+                  Link
+                </button>
+              </>
             )
           )}
           <p>
-            {isLoading
-              ? "Tuning into your vibe..."
-              : message
-              ? message
-              : "Scan this QR code to share your watch history"}
+            {isLoading ? (
+              "Tuning into your vibe..."
+            ) : message ? (
+              message
+            ) : (
+              <>
+                <span className="for-desktop">
+                  Scan this QR code to share your watch history
+                </span>
+                <span className="for-mobile">
+                  Click on the above button to share your watch history
+                </span>
+              </>
+            )}
           </p>
+
           <button
             className="back-button"
             onClick={() => {
@@ -420,7 +452,7 @@ const VibeMatcher = () => {
   return (
     <div className="vibe-matcher">
       {user && (
-        <div className="user-info">
+        <div className="user-info matching-signout">
           <img
             src={user.photoURL}
             alt={user.displayName}
