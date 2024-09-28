@@ -17,7 +17,7 @@ const Leaderboard = () => {
     const fetchData = async () => {
       try {
         const similarUsersResponse = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/api/similar-users/${uid}/100`
+          `${process.env.REACT_APP_BACKEND_URL}/api/similar-users/${uid}/5`
         );
         if (!similarUsersResponse.ok) {
           throw new Error("Failed to fetch leaderboard data");
@@ -111,7 +111,7 @@ const Leaderboard = () => {
       >
         <span className="similar-user-rank">{index + 1}</span>
         <div className="similar-user-email">
-          <span>{user?.displayName || user?.email || ""}</span>
+          <span>{user?.email || user?.displayName || ""}</span>
           {pixelHearts}
         </div>
         <span className="similar-user-score">
@@ -155,7 +155,7 @@ const Leaderboard = () => {
           <div className="similar-users-container">
             <h3 className="similar-users-title">
               {similarUsers.length > 0
-                ? "Your Vibe Matches"
+                ? "Here are the top 5 people you vibe with!"
                 : "No matches yet, calculate your vibe to find your soulmate!"}
             </h3>
             <ul className="similar-users-list">
