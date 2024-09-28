@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const statusToText = {
-  PENDING: "Waiting for verification",
-  VERIFIED: "Verification successful",
-  REJECTED: "Verification failed",
+  PROOF_GENERATION_STARTED: "Waiting for verification",
+  PROOF_GENERATION_SUCCESS: "Verification successful",
+  PROOF_SUBMITTED: "Proof submitted",
+  PROOF_GENERATION_FAILED: "Verification failed",
 };
 
 const StatusPage = () => {
