@@ -361,7 +361,7 @@
 }
 
 .hype-headline:hover .hype-headline-content {
-  animation-play-state: paused;
+  /* animation-play-state: paused; */
 }
 
 .logged-in-content {

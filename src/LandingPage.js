@@ -74,6 +74,7 @@ const VibeMatcher = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState(null);
   const [message, setMessage] = useState("212121");
+  const [proofStatus, setProofStatus] = useState(null);
 
   console.log({ message });
 
@@ -151,7 +152,7 @@ const VibeMatcher = () => {
   const getVerificationReq = async (service) => {
     // get auth token
     setMessage(null);
-
+    setProofStatus(null);
     setSelectedService(service);
     setIsLoading(true);
     const APP_ID = process.env.REACT_APP_RECLAIM_APP_ID;
@@ -192,6 +193,7 @@ const VibeMatcher = () => {
               service === "netflix" ? "Netflix" : "Prime"
             } watch history!`
           );
+          setProofStatus("success");
           // toast.success("Verification successful!");
           setQrCodeUrl(null);
 
@@ -238,6 +240,7 @@ const VibeMatcher = () => {
           }
         },
         onFailureCallback: (error) => {
+          setProofStatus("error");
           console.error("Verification failed", error);
           toast.error("Verification failed. Please try again.");
           setQrCodeUrl(null);
@@ -267,8 +270,15 @@ const VibeMatcher = () => {
     if (selectedService) {
       return (
         <div className="qr-code-container">
-          <h2 className="verification-headline">
-            Link your {selectedService} data
+          <h2
+            className="verification-headline"
+            style={{ lineHeight: "1.4", marginBottom: "1rem" }}
+          >
+            {proofStatus === null
+              ? `Link your ${selectedService} data`
+              : proofStatus === "success"
+              ? "Verification successful!"
+              : "Verification failed. Please try again."}
           </h2>
           {isLoading ? (
             <div className="loading-scanner"></div>
@@ -309,7 +319,7 @@ const VibeMatcher = () => {
       <>
         <h2 className="hype-headline">
           <span className="hype-headline-content">
-            Add your Netflix or Prime data to unlock these features.
+            Share your Netflix or Prime watch history to match your vibe
           </span>
         </h2>
         <div className="reclaim-buttons">
@@ -400,6 +410,13 @@ const VibeMatcher = () => {
     ));
   };
 
+  const handleNavigateHome = () => {
+    setSelectedService(null);
+    setQrCodeUrl(null);
+    setMessage(null);
+    navigate("/");
+  };
+
   return (
     <div className="vibe-matcher">
       {user && (
@@ -431,7 +448,11 @@ const VibeMatcher = () => {
         )}
         {user && <div className="crazy-background">{createParticles(20)}</div>}
         <div className={getContentStyle()}>
-          <h1 className={`logo pixel-art ${user ? "logged-in" : ""}`}>
+          <h1
+            className={`logo pixel-art ${user ? "logged-in" : ""}`}
+            onClick={handleNavigateHome}
+            style={{ cursor: "pointer" }}
+          >
             VIBE MATCH
           </h1>
           {user ? (
