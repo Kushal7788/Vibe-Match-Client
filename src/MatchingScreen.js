@@ -85,7 +85,6 @@ const MatchingScreen = () => {
   const [showVibeScore, setShowVibeScore] = useState(false);
   const [message, setMessage] = useState(null);
   const [qrCodeUrl, setQrCodeUrl] = useState(null);
-  const [selectedService, setSelectedService] = useState(null);
 
   useEffect(() => {
     if (user) {
@@ -111,8 +110,6 @@ const MatchingScreen = () => {
     }
   };
 
-  console.log("userData", userData, user);
-
   useEffect(() => {
     if (user && fromUid && fromUsername) {
       fetchVibeSimilarityData();
@@ -120,10 +117,17 @@ const MatchingScreen = () => {
   }, [user]);
 
   const fetchVibeSimilarityData = async () => {
+    console.log("fetchVibeSimilarityData");
     setIsLoading(true);
     try {
+      const token = await auth.currentUser.getIdToken();
       const vibeResponse = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/api/similarity/${fromUid}/${user.uid}`
+        `${process.env.REACT_APP_BACKEND_URL}/api/similarity/${fromUid}/${user.uid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       const similariltyData = await vibeResponse.json();
@@ -213,7 +217,6 @@ const MatchingScreen = () => {
 
   const getVerificationReq = async (service) => {
     setMessage(null);
-    setSelectedService(service);
     setIsLoading(true);
     const APP_ID = process.env.REACT_APP_RECLAIM_APP_ID;
     const APP_SECRET = process.env.REACT_APP_RECLAIM_APP_SECRET;
@@ -284,7 +287,6 @@ const MatchingScreen = () => {
             setMessage("Proof data and titles sent successfully");
             await fetchVibeSimilarityData();
             setQrCodeUrl(null);
-            setSelectedService(null);
             // alert("Proof data and titles sent successfully");
 
             console.log("Proof data and titles sent successfully");
@@ -304,7 +306,6 @@ const MatchingScreen = () => {
     } catch (error) {
       console.error("Error in getVerificationReq:", error);
       toast.error("An error occurred. Please try again.");
-      setSelectedService(null);
     } finally {
       setIsLoading(false);
       setMessage(null);
@@ -424,7 +425,6 @@ const MatchingScreen = () => {
                               <button
                                 className="back-button"
                                 onClick={() => {
-                                  setSelectedService(null);
                                   setQrCodeUrl(null);
                                 }}
                               >
